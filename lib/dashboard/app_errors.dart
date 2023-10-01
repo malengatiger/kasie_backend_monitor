@@ -89,13 +89,15 @@ class AppErrorsState extends State<AppErrors>
                           itemCount: widget.appErrors.length,
                           itemBuilder: (_, index) {
                             final err = widget.appErrors.elementAt(index);
+                            final date = DateTime.parse(err.created!).toLocal();
+                            final mDate = getFormattedDateLong(date.toIso8601String());
                             return Card(
                               shape: getRoundedBorder(radius: 16),
                               elevation: 12,
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ListTile(
-                                  title: Text(getFormattedDateLong(err.created!),
+                                  title: Text(mDate,
                                     style: myTextStyleSmallBoldPrimaryColor(context),),
                                   subtitle: Text('${err.errorMessage}', style: myTextStyleSmall(context),),
                                 )

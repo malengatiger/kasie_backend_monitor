@@ -86,6 +86,8 @@ class BackendErrorsState extends State<BackendErrors>
                         itemCount: widget.kasieErrors.length,
                         itemBuilder: (_, index) {
                           final err = widget.kasieErrors.elementAt(index);
+                          final date = DateTime.parse(err.date!).toLocal();
+                          final mDate = getFormattedDateLong(date.toIso8601String());
                           return Card(
                             shape: getRoundedBorder(radius: 16),
                             elevation: 12,
@@ -93,7 +95,7 @@ class BackendErrorsState extends State<BackendErrors>
                               padding: const EdgeInsets.all(8.0),
                               child: ListTile(
                                 title: Text(
-                                  getFormattedDateLong(err.date!),
+                                  mDate,
                                   style: myTextStyleSmallBoldPrimaryColor(context),
                                 ),
                                 subtitle: Text(

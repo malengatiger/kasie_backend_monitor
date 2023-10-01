@@ -51,12 +51,15 @@ class DashboardState extends State<Dashboard>
     appErrorSub = fcmBloc.appErrorStream.listen((event) {
       pp('$mm AppError delivered on stream');
       appErrors.add(buildAppError(event));
+      appErrors.sort((a,b) => b.created!.compareTo(a.created!));
+
       _refreshState();
 
     });
     kasieErrorSub = fcmBloc.kasieErrorStream.listen((event) {
       pp('$mm KasieError delivered on stream');
       kasieErrors.add(KasieError.fromJson(event));
+      kasieErrors.sort((a,b) => b.date!.compareTo(a.date!));
       _refreshState();
     });
   }
@@ -98,6 +101,9 @@ class DashboardState extends State<Dashboard>
       kasieErrors = await kasieErrorService.getKasieErrors(date!);
       appErrors = await kasieErrorService.getAppErrors(date!);
       pp('$mm ... kasieErrors: ${kasieErrors.length} - appErrors: ${appErrors.length}');
+      date =
+          DateTime.now().subtract(Duration(days: days)).toIso8601String();
+      kasieErrors.sort((a,b) => b.date!.compareTo(a.date!));
     } catch (e, stack) {
       pp('$e - $stack');
       if (mounted) {
